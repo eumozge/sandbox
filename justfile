@@ -8,7 +8,7 @@ install:
     uv sync --all-extras --all-groups
 
 lint:
-	just py ruff check --fix --unsafe-fixes && just py ruff format && just py mypy main.py
+	just py ruff check --fix --unsafe-fixes && just py ruff format && uv run mypy app
 
 test:
 	just py pytest -s -v

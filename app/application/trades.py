@@ -23,10 +23,7 @@ class CollectTradesUseCase:
 
     async def fetch(self, page_num: int) -> Page | None:
         async with self.semaphore:
-            page = await self.repository.get_page(page_num)
-            if page is None:
-                return None
-            return page
+            return await self.repository.get_page(page_num)
 
     def fetch_done_callback(self, task: asyncio.Task[Page | None]) -> None:
         page = task.result()
@@ -35,12 +32,14 @@ class CollectTradesUseCase:
             self.active_tasks.add(pub_task)
             pub_task.add_done_callback(self.active_tasks.discard)
         self.active_tasks.discard(task)
+        self.queue.task_done()
 
     async def consume(self) -> None:
-        while page_num := await self.queue.get():
-            task = asyncio.create_task(self.fetch(page_num))
+        while num := await self.queue.get():
+            task = asyncio.create_task(self.fetch(num))
             self.active_tasks.add(task)
             task.add_done_callback(self.fetch_done_callback)
+        self.queue.task_done()
 
     async def produce(self, from_page: int, to_page: int) -> None:
         for page in range(from_page, to_page + 1):

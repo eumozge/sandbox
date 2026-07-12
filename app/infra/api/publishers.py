@@ -21,7 +21,9 @@ class RabbitMQTradePagePublisher(TradePagePublisher):
         self.connection = await aio_pika.connect_robust(self.settings.url)
         self.channel = await self.connection.channel()
         self.exchange = await self.channel.declare_exchange(
-            "spimex", aio_pika.ExchangeType.TOPIC, durable=True,
+            "spimex",
+            aio_pika.ExchangeType.TOPIC,
+            durable=True,
         )
         queue = await self.channel.declare_queue("spimex.pages", durable=True)
         await queue.bind(self.exchange, routing_key="page.fetched")
