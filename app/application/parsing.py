@@ -12,14 +12,14 @@ class ParseTradesUseCase:
         self.consumer = consumer
         self.parser = parser
 
-    async def _handle(self, page: Page) -> None:
+    async def handle(self, page: Page) -> None:
         await self.parser.parse(page)
 
     async def start(self) -> None:
         logger.info("Start parsing trades")
         await self.consumer.setup()
         try:
-            await self.consumer.consume(self._handle)
+            await self.consumer.consume(self.handle)
         finally:
             await self.consumer.teardown()
         logger.info("Finished parsing trades")
