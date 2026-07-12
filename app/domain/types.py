@@ -1,30 +1,24 @@
 import json
-from collections.abc import Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from typing import TypedDict
 
 type HTML = str
 
 
-@dataclass
-class OilProduct:
-    name: str
-    code: str
-
-
-@dataclass
-class Trade:
-    product: OilProduct
-    volume: int
-    price: float
-    total: float
+class JSONPage(TypedDict):
+    pid: str
+    body: HTML
 
 
 @dataclass
 class Page:
     pid: str
     body: HTML
-    status: int
-    trades: Sequence[Trade] = field(default_factory=list)
+    status: int | None = None
 
     def to_json(self) -> str:
         return json.dumps({"pid": self.pid, "body": self.body})
+
+    @classmethod
+    def from_json(cls, message: JSONPage) -> "Page":
+        return cls(pid=message["pid"], body=message["body"])
