@@ -1,3 +1,4 @@
+from pydantic import computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -24,8 +25,13 @@ class RabbitMQ(BaseSettings):
     host: str = "localhost"
     port: int = 5672
     user: str = "guest"
-    password: str = "guest"  # noqa: S105
+    password: str = "guest"
     mgmt_port: int = 15672
+
+    @computed_field
+    @property
+    def url(self) -> str:
+        return f"amqp://{self.user}:{self.password}@{self.host}:{self.port}/"
 
 
 rabbitmq = RabbitMQ()

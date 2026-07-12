@@ -1,6 +1,6 @@
+import json
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-
 
 type HTML = str
 
@@ -25,3 +25,6 @@ class Page:
     body: HTML
     status: int
     trades: Sequence[Trade] = field(default_factory=list)
+
+    def to_json(self) -> str:
+        return json.dumps({"pid": self.pid, "body": self.body})

@@ -28,6 +28,7 @@ ignore = [
     "D107", # Missing docstring in `__init__`
     "N999", # Invalid module name
     "S101", # Use of `assert` detected
+    "S105", # Possible hardcoded password
     "S311", # Standard pseudo-random generators are not suitable for cryptographic purposes
     "RET503", # Implict-return
     "ANN204", # Missing return type annotation for special method `__init__`,

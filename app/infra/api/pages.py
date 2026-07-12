@@ -15,7 +15,7 @@ class SpimexPageRepository(TradeRepository):
         self.session = httpx.AsyncClient()
 
     async def setup(self) -> None:
-        pass
+        logger.info("Setting up Spimex page repository at %s", self.url)
 
     async def teardown(self) -> None:
         await self.session.aclose()
