@@ -3,7 +3,17 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class PostgresSettings(BaseSettings):
-    dsn: PostgresDsn = PostgresDsn("postgresql+asyncpg://postgres:password@localhost:5432/postgres")
+    host: str = "localhost"
+    port: int = 5432
+    user: str = "postgres"
+    password: str = "password"  # noqa: S105
+    db: str = "postgres"
+
+    @property
+    def dsn(self) -> PostgresDsn:
+        return PostgresDsn(
+            f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.db}"
+        )
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -14,7 +24,15 @@ class PostgresSettings(BaseSettings):
 
 
 class RedisSettings(BaseSettings):
-    dsn: RedisDsn = RedisDsn("redis://:password@localhost:6379/0")
+    host: str = "localhost"
+    port: int = 6379
+    password: str = "password"  # noqa: S105
+    db: int = 0
+
+    @property
+    def dsn(self) -> RedisDsn:
+        auth = f":{self.password}@" if self.password else ""
+        return RedisDsn(f"redis://{auth}{self.host}:{self.port}/{self.db}")
 
     model_config = SettingsConfigDict(
         env_file=".env",
