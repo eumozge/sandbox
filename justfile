@@ -30,3 +30,5 @@ storages-down:
 
 storages-clean:
     docker compose -f dockercompose/dev.storages.yaml --env-file .env -p dev down -v
+dev:
+    .venv/bin/python -m uvicorn presentation.main:app --reload --host 0.0.0.0 --port 8000
