@@ -19,10 +19,10 @@ main *args:
 
 
 storages-up:
-    docker compose -f docker-compose.yaml --env-file .env -p dev up -d --remove-orphans
+    docker compose -f dockercompose/dev.storages.yaml --env-file .env -p dev up -d --remove-orphans
 
 storages-down:
-    docker compose -f docker-compose.yaml --env-file .env -p dev down
+    docker compose -f dockercompose/dev.storages.yaml --env-file .env -p dev down
 
 storages-clean:
-    docker compose -f docker-compose.yaml --env-file .env -p dev down -v
+    docker compose -f dockercompose/dev.storages.yaml --env-file .env -p dev down -v
