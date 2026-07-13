@@ -8,15 +8,19 @@ install:
     uv sync --all-extras --all-groups
 
 lint:
-	just py ruff check --fix --unsafe-fixes && just py ruff format && just py mypy main.py
+	just py ruff check --fix --unsafe-fixes && just py ruff format && just py mypy src
 
 test:
 	just py pytest -s -v
 
+migrations-make message="":
+    uv run alembic revision --autogenerate -m "{{message}}"
+
+migrations-apply:
+    uv run alembic upgrade head
 
 main *args:
 	just py python3 app {{args}}
-
 
 storages-up:
     docker compose -f dockercompose/dev.storages.yaml --env-file .env -p dev up -d --remove-orphans
