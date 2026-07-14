@@ -29,7 +29,7 @@ mapper_registry.map_imperatively(
     properties={
         "id": composite(value_objects.ID, LINKS_TABLE.c.id),
         "original_url": composite(value_objects.URL, LINKS_TABLE.c.original_url),
-        "short_code": LINKS_TABLE.c.short_code,
+        "short_code": composite(value_objects.ShortCode, LINKS_TABLE.c.short_code),
     },
     column_prefix="_",
 )

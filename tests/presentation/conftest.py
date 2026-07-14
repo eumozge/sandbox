@@ -1,6 +1,7 @@
 from collections.abc import AsyncGenerator
 
 import pytest_asyncio
+import sqlalchemy as sa
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 
@@ -26,9 +27,12 @@ async def engine() -> AsyncGenerator[AsyncEngine, None]:
 
 @pytest_asyncio.fixture
 async def session(engine: AsyncEngine) -> AsyncGenerator[AsyncSession, None]:
-    # TODO: implement rollback for test isolation
     session = AsyncSession(bind=engine, expire_on_commit=False)
     yield session
+
+    table_names = ", ".join(t.name for t in BaseModel.metadata.sorted_tables)
+    await session.execute(sa.text(f"TRUNCATE {table_names} RESTART IDENTITY CASCADE"))
+    await session.commit()
     await session.close()
 
 

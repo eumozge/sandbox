@@ -9,6 +9,9 @@ from domain.common.value_objects import ValueObject
 class URL(ValueObject[str]):
     value: str = field(default_factory=str)
 
+    def __composite_values__(self) -> tuple[str]:
+        return (self.value,)
+
     def validate(self) -> None:
         adapter = TypeAdapter(HttpUrl)
         adapter.validate_python(self.value)

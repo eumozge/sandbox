@@ -8,5 +8,8 @@ from domain.common.value_objects import ValueObject
 class ID(ValueObject[UUID]):
     value: UUID = field(default_factory=uuid4)
 
+    def __composite_values__(self) -> tuple[UUID]:
+        return (self.value,)
+
     def validate(self) -> None:
         pass

@@ -2,14 +2,13 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 from domain.common.entities import Entity
-from domain.links.value_objects.id import ID
-from domain.links.value_objects.short_code import ShortCode
-from domain.links.value_objects.url import URL
+from domain.links import value_objects as vo
 
 
 @dataclass
 class Link(Entity):
-    id: ID
-    original_url: URL
-    short_code: ShortCode
+    original_url: vo.URL
+    short_code: vo.ShortCode
+
+    id: vo.ID = field(default_factory=vo.ID)
     created_at: datetime = field(default_factory=datetime.now)
