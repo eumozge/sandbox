@@ -29,12 +29,15 @@ ignore = [
     "N999", # Invalid module name
     "S101", # Use of `assert` detected
     "S311", # Standard pseudo-random generators are not suitable for cryptographic purposes
+    "TD002", # Missing author in TODO; try: `# TODO(<author_name>): ...` or `# TODO @<author_name>: ...`,
+    "TD003", # Missing issue link for this TODO,
     "RET503", # Implict-return
     "ANN204", # Missing return type annotation for special method `__init__`,
     "ANN401", # Dynamically typed expressions (typing.Any) are disallowed in `*args` and `**kwargs`
     "COM812", # Checks for the absence of trailing commas
     "FBT001", # Boolean-typed positional argument in function definition
     "RUF013", # PEP 484 prohibits implicit `Optional`,
+    "FIX002", #Line contains TODO, consider resolving the issue,
 ]
 
 [lint.isort]

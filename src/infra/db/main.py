@@ -17,8 +17,8 @@ async def get_engine(settings: PostgresSettings) -> AsyncGenerator[AsyncEngine, 
     engine = create_async_engine(
         str(settings.dsn),
         echo=False,
-        json_serizlier=lambda val: orjson.dumps(val).decode(),
-        json_deserilizer=orjson.loads,
+        json_serializer=lambda val: orjson.dumps(val).decode(),
+        json_deserializer=orjson.loads,
         pool_size=50,
     )
     yield engine

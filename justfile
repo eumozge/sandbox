@@ -19,9 +19,6 @@ migrations-make message="":
 migrations-apply:
     uv run alembic upgrade head
 
-main *args:
-	just py python3 app {{args}}
-
 storages-up:
     docker compose -f dockercompose/dev.storages.yaml --env-file .env -p dev up -d --remove-orphans
 
@@ -30,5 +27,6 @@ storages-down:
 
 storages-clean:
     docker compose -f dockercompose/dev.storages.yaml --env-file .env -p dev down -v
-dev:
+
+main:
     .venv/bin/python -m uvicorn presentation.main:app --reload --host 0.0.0.0 --port 8000

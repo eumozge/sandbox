@@ -14,12 +14,12 @@ LINKS_TABLE = sa.Table(
         sa.UUID(as_uuid=True),
         primary_key=True,
         default=uuid4,
-        server_default=sa.func.uuid_generate_v2(),
+        server_default=sa.func.gen_random_uuid(),
     ),
     sa.Column("original_url", sa.String),
     sa.Column("short_code", sa.String),
     sa.Column(
-        "created_at", sa.DateTime(timezone=True), server_default=sa.text("NULL"), nullable=False
+        "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False
     ),
 )
 
@@ -31,4 +31,5 @@ mapper_registry.map_imperatively(
         "original_url": composite(value_objects.URL, LINKS_TABLE.c.original_url),
         "short_code": LINKS_TABLE.c.short_code,
     },
+    column_prefix="_",
 )

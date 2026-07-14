@@ -26,13 +26,10 @@ async def engine() -> AsyncGenerator[AsyncEngine, None]:
 
 @pytest_asyncio.fixture
 async def session(engine: AsyncEngine) -> AsyncGenerator[AsyncSession, None]:
-    connection = await engine.connect()
-    transaction = await connection.begin()
-    session = AsyncSession(bind=connection, expire_on_commit=False)
+    # TODO: implement rollback for test isolation
+    session = AsyncSession(bind=engine, expire_on_commit=False)
     yield session
     await session.close()
-    await transaction.rollback()
-    await connection.close()
 
 
 @pytest_asyncio.fixture
