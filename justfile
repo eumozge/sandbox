@@ -11,7 +11,7 @@ lint:
 	just py ruff check --fix --unsafe-fixes && just py ruff format && just py mypy main.py
 
 test:
-	just py pytest -s -v
+	just py pytest -s -vv
 
 
 main *args:
